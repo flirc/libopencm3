@@ -1,5 +1,25 @@
+/*
+ * This file is part of the libopencm3 project.
+ *
+ * Copyright (C) 2018  Flirc Inc.
+ * Written by Jason Kotzin <jasonkotzin@gmail.com>
+ *
+ * This library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/**@{*/
+
 #include <libopencm3/sam/d/port.h>
-#include <libopencm3/sam/d/bitfield.h>
 
 /**@{*/
 
@@ -169,9 +189,13 @@ void gpio_config_input(uint32_t port, uint32_t pin, uint32_t inflags)
 		/* de-activate pullup */
 		PORT_OUTCLR(port) = pin;
 	}
+/* If we are using CPU_IOBUS, we need to enable continuous sampling */
+#ifdef SAMD_HIGHSPEED_IO
+	PORT_CTRL(port) |= p;
+#endif
 
 	/* set pin mux enable pin */
-	PORT_PINCFG(port, least_set_bit(pin)) |= GPIO_PINCFG_INEN;
+	PORT_PINCFG(port, p) |= GPIO_PINCFG_INEN;
 }
 /*---------------------------------------------------------------------------*/
 

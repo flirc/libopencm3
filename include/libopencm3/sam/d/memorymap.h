@@ -32,7 +32,11 @@
 /* --- SAMD AHB-APB bridge B -------------------------------------------- */
 #define DSU_BASE			(0x41002000U)
 #define NVMCTRL_BASE			(0x41004000U)
+#ifdef SAMD_HIGHSPEED_IO
+#define PORT_BASE			(0x60000000)
+#else
 #define PORT_BASE			(0x41004400U)
+#endif
 #define DMAC_BASE			(0x41004800U)
 #define MTB_BASE			(0x41006000U)
 /* --- SAMD AHB-APB bridge C -------------------------------------------- */

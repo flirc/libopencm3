@@ -76,7 +76,7 @@
 
 /* Input Flags */
 #define GPIO_IN_FLAG_PULLUP		(1 << 0)
-#define GPIO_IN_FLAG_PULLDOWN		(1 << 1)
+#define GPIO_IN_FLAG_PULLDOWN		(0 << 1)
 #define GPIO_OUT_FLAG_DEFAULT_HIGH	(1 << 0)
 
 #define GPIO0				(1 << 0)
