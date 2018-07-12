@@ -98,6 +98,12 @@ SECTIONS
 		KEEP (*(SORT(.fini_array.*)))
 		__fini_array_end = .;
 	} >rom
+	.ushell.cmds : {
+		. = ALIGN(4);
+		_cmds = .;
+		KEEP (*(SORT(.cmds.*)))
+		_cmds_end = .;
+	} >rom
 
 	/*
 	 * Another section used by C++ stuff, appears when using newlib with

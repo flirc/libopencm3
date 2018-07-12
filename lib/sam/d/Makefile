@@ -28,16 +28,18 @@ AR		= $(PREFIX)-ar
 TGT_CFLAGS	= -Os -Wall -Wextra -I../../../include -fno-common \
 		  -mcpu=cortex-m0plus -mthumb $(FP_FLAGS) -Wstrict-prototypes \
 		  -ffunction-sections -fdata-sections -MD -DSAMD
+
+# We don't want to link in printf
+TGT_CFLAGS      += -nodefaultlibs -ffreestanding
+
 # Use CPU IOBUS for direct GPIO access which is single cycle access
 TGT_CFLAGS	+= -DSAMD_HIGHSPEED_IO
 TGT_CFLAGS      += $(DEBUG_FLAGS)
-#TGT_CFLAGS	+= $(STANDARD_FLAGS)
-# ARFLAGS	= rcsv
 ARFLAGS		= rcs
 OBJS		= gclk.o nvmctrl.o gpio.o usb_samdx.o
-OBJS		+= usb.o usb_control.o usb_standard.o uart.o
+OBJS		+= usb.o usb_control.o usb_standard.o uart.o printf.o ushell.o
 
-VPATH += ../../usb:../:../../cm3:../common
+VPATH += ../../usb:../:../../cm3:../common:../../ushell
 
 include ../../Makefile.include
 
