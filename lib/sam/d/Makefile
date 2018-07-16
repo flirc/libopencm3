@@ -33,7 +33,7 @@ TGT_CFLAGS	= -Os -Wall -Wextra -I../../../include -fno-common \
 TGT_CFLAGS      += -nodefaultlibs -ffreestanding
 
 # Use CPU IOBUS for direct GPIO access which is single cycle access
-TGT_CFLAGS	+= -DSAMD_HIGHSPEED_IO
+TGT_CFLAGS	+= -DSAMD_HIGHSPEED_IO -DCONSOLE_HISTORY_ENABLE
 TGT_CFLAGS      += $(DEBUG_FLAGS)
 ARFLAGS		= rcs
 OBJS		= gclk.o nvmctrl.o gpio.o usb_samdx.o

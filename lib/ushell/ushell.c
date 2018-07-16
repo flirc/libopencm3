@@ -369,6 +369,19 @@ DECLARE_SHELL_COMMAND(help, cmd_help,
 	"  synopsis");
 
 #ifdef CONSOLE_HISTORY_ENABLE
+char *strzcpy(char *dest, const char *src, int len)
+{
+        char *d = dest;
+        if (len <= 0)
+                return dest;
+        while (len > 1 && *src) {
+                *(d++) = *(src++);
+                len--;
+        }
+        *d = '\0';
+        return dest;
+}
+
 static void move_cursor_begin(void)
 {
 	while (line_i) {
@@ -398,7 +411,7 @@ void load_history(int idx)
 /**
  * Save line to the next history slot
  */
-void save_history(struct console_list *shellp)
+void save_history(void)
 {
 	if (strlen(linebuf) > 0)
 		strzcpy(history[history_next], linebuf, USHELL_LINEBUF_SIZE);
