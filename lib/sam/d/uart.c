@@ -156,3 +156,19 @@ void usart_disable(uint8_t usart)
 	INSERTBF(UART_CTRLA_ENABLE, 0, UART(usart)->ctrla);
 	while (UART(usart)->syncbusy);
 }
+
+void usart_set_chsize(uint8_t usart, uint8_t size)
+{
+	INSERTBF(UART_CTRLB_CHSIZE, size, UART(usart)->ctrlb);
+}
+
+void usart_set_sbmode(uint8_t usart, uint8_t mode)
+{
+	INSERTBF(UART_CTRLB_SBMODE, mode, UART(usart)->ctrlb);
+}
+
+void usart_set_parity(uint8_t usart, uint8_t mode, uint8_t enable)
+{
+	INSERTBF(UART_CTRLB_PMODE, mode, UART(usart)->ctrlb);
+	INSERTBF(UART_CTRLA_FORM, enable, UART(usart)->ctrla);
+}

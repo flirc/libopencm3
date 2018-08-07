@@ -189,4 +189,8 @@ void usart_send(uint8_t usart, uint8_t c);
 uint8_t usart_recv(uint8_t usart);
 uint8_t usart_recv_blocking(uint8_t usart);
 
+void usart_set_chsize(uint8_t usart, uint8_t size);
+void usart_set_sbmode(uint8_t usart, uint8_t mode);
+void usart_set_parity(uint8_t usart, uint8_t mode, uint8_t enable);
+
 #endif /* SAMDX_UART_H */
