@@ -112,7 +112,7 @@ void usart_disable_tx_interrupt(uint8_t usart)
 	INSERTBF(UART_INTENSET_RXC, 1, UART(0)->intenset);
 }
 
-void usart_enable(uint8_t usart, uint32_t baud)
+void usart_setup(uint8_t usart, uint32_t baud)
 {
 	INSERTBF(PM_APBCMASK_PAC2, 1, PM->apbcmask);
 	INSERTBF(1 : usart + 2, 1, PM->apbcmask);
@@ -136,10 +136,16 @@ void usart_enable(uint8_t usart, uint32_t baud)
 	while (UART(usart)->syncbusy);
 
 	/* enable cm level interrupt */
-	nvic_enable_irq(NVIC_SERCOM0_IRQ);
+	nvic_enable_irq(NVIC_SERCOM0_IRQ + usart);
 
 	INSERTBF(UART_CTRLB_TXEN, 1, UART(usart)->ctrlb);
 	while (UART(usart)->syncbusy);
+}
+
+void usart_enable(uint8_t usart, uint32_t baud)
+{
+	if (baud)
+		usart_setup(usart, baud);
 
 	INSERTBF(UART_CTRLA_ENABLE, 1, UART(usart)->ctrla);
 	while (UART(usart)->syncbusy);
@@ -155,6 +161,12 @@ void usart_disable(uint8_t usart)
 
 	INSERTBF(UART_CTRLA_ENABLE, 0, UART(usart)->ctrla);
 	while (UART(usart)->syncbusy);
+}
+
+void usart_set_pads(uint8_t usart, uint8_t rx, uint8_t tx)
+{
+	INSERTBF(UART_CTRLA_TXPO, tx, UART(usart)->ctrla);
+	INSERTBF(UART_CTRLA_RXPO, rx, UART(usart)->ctrla);
 }
 
 void usart_set_chsize(uint8_t usart, uint8_t size)

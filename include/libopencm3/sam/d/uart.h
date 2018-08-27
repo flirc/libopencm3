@@ -180,6 +180,7 @@ void usart_disable_rx_interrupt(uint8_t usart);
 void usart_enable_tx_interrupt(uint8_t usart);
 void usart_disable_tx_interrupt(uint8_t usart);
 
+void usart_setup(uint8_t usart, uint32_t baud);
 void usart_enable(uint8_t usart, uint32_t baud);
 void usart_disable(uint8_t usart);
 
@@ -192,5 +193,7 @@ uint8_t usart_recv_blocking(uint8_t usart);
 void usart_set_chsize(uint8_t usart, uint8_t size);
 void usart_set_sbmode(uint8_t usart, uint8_t mode);
 void usart_set_parity(uint8_t usart, uint8_t mode, uint8_t enable);
+
+void usart_set_pads(uint8_t usart, uint8_t rx, uint8_t tx);
 
 #endif /* SAMDX_UART_H */
