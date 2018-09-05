@@ -77,8 +77,16 @@ void usart_set_baudrate(uint8_t usart, uint32_t baud)
 {
 	uint64_t ratio, scale, baudc = 0;
 
-	ratio = ((uart_samples_pb(usart) * (uint64_t)baud) << 32) /
-		(get_periph_clk_speed(usart+GCLK_ID_SERCOM0_CORE)*1000);
+	//ratio = ((uart_samples_pb(usart) * (uint64_t)baud) << 32) /
+	//	(get_periph_clk_speed(usart+GCLK_ID_SERCOM0_CORE)*1000);
+
+	if (!usart){
+		ratio = ((uart_samples_pb(usart) * (uint64_t)baud) << 32) /
+			(get_periph_clk_speed(GCLK_ID_SERCOM0_CORE)*1000);
+	}else {
+		ratio = ((uart_samples_pb(usart) * (uint64_t)baud) << 32) /
+			(get_periph_clk_speed(GCLK_ID_SERCOM1_CORE)*1000);
+	}
 
 	scale = ((uint64_t)1 << 32) - ratio;
 	baudc = ((1<<16) * scale) >> 32;
@@ -109,7 +117,7 @@ void usart_disable_tx_interrupt(uint8_t usart)
 	INSERTBF(UART_INTENCLR_DRE, 1, UART(usart)->intenclr);
 
 	/* bug?, need to re-enable rx complete interrupt */
-	INSERTBF(UART_INTENSET_RXC, 1, UART(0)->intenset);
+	INSERTBF(UART_INTENSET_RXC, 1, UART(usart)->intenset);
 }
 
 void usart_setup(uint8_t usart, uint32_t baud)
@@ -132,20 +140,24 @@ void usart_setup(uint8_t usart, uint32_t baud)
 
 	usart_set_baudrate(usart, baud);
 
-	INSERTBF(UART_CTRLB_RXEN, 1, UART(usart)->ctrlb);
-	while (UART(usart)->syncbusy);
-
 	/* enable cm level interrupt */
-	nvic_enable_irq(NVIC_SERCOM0_IRQ + usart);
-
-	INSERTBF(UART_CTRLB_TXEN, 1, UART(usart)->ctrlb);
-	while (UART(usart)->syncbusy);
+	//nvic_enable_irq(NVIC_SERCOM0_IRQ + usart);
+	if (!usart)
+		nvic_enable_irq(NVIC_SERCOM0_IRQ);
+	else
+		nvic_enable_irq(NVIC_SERCOM1_IRQ);
 }
 
 void usart_enable(uint8_t usart, uint32_t baud)
 {
 	if (baud)
 		usart_setup(usart, baud);
+
+	INSERTBF(UART_CTRLB_RXEN, 1, UART(usart)->ctrlb);
+	while (UART(usart)->syncbusy);
+
+	INSERTBF(UART_CTRLB_TXEN, 1, UART(usart)->ctrlb);
+	while (UART(usart)->syncbusy);
 
 	INSERTBF(UART_CTRLA_ENABLE, 1, UART(usart)->ctrla);
 	while (UART(usart)->syncbusy);
