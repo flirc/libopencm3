@@ -77,9 +77,6 @@ void usart_set_baudrate(uint8_t usart, uint32_t baud)
 {
 	uint64_t ratio, scale, baudc = 0;
 
-	//ratio = ((uart_samples_pb(usart) * (uint64_t)baud) << 32) /
-	//	(get_periph_clk_speed(usart+GCLK_ID_SERCOM0_CORE)*1000);
-
 	if (!usart){
 		ratio = ((uart_samples_pb(usart) * (uint64_t)baud) << 32) /
 			(get_periph_clk_speed(GCLK_ID_SERCOM0_CORE)*1000);
@@ -141,7 +138,6 @@ void usart_setup(uint8_t usart, uint32_t baud)
 	usart_set_baudrate(usart, baud);
 
 	/* enable cm level interrupt */
-	//nvic_enable_irq(NVIC_SERCOM0_IRQ + usart);
 	if (!usart)
 		nvic_enable_irq(NVIC_SERCOM0_IRQ);
 	else

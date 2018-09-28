@@ -133,9 +133,9 @@ int nvmctrl_init(uint8_t sleep_power_mode, int cache_readmode);
 //int nvmctrl_islocked(int addr);
 //int nvmctrl_lock_region(int addr);
 //int nvmctrl_unlock_region(int addr);
-//int nvmctrl_erase_row(int addr);
+int nvmctrl_erase_row(int addr);
 //int nvmctrl_write_page(int addr, uint8_t *buffer);
-//int nvmctrl_write_row(int addr, uint8_t *buffer);
+int nvmctrl_write_row(int addr, uint8_t *buffer);
 //int nvmctrl_pr_on(void);
 //int nvmctrl_pr_off(void);
 

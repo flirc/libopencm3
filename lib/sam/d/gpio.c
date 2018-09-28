@@ -95,7 +95,8 @@ valid pin data.
 */
 uint32_t gpio_port_read(uint32_t gpioport)
 {
-	return (uint16_t)PORT_IN(gpioport);
+	//return (uint16_t)PORT_IN(gpioport);
+	return PORT_IN(gpioport);
 }
 
 /*---------------------------------------------------------------------------*/
